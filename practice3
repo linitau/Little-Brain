@@ -1,0 +1,40 @@
+//---------------------------------------------//
+message3='lisa said :"i like apple"'
+message4="lisa said:'i like apple'"
+message5="lisa said:it's a joke"
+print(message5)
+print(message4)
+print(message3)
+name1='Pr Jaye Lin'
+name2='pr jaye lin'
+print(name2.title())
+print(name1.upper())
+print(name1.lower())
+print(name2.upper())
+first_name='Jaye'
+last_name='Lin'
+name=first_name+' '+last_name
+print(name)
+message6='people\nhuman\tman\nwoman'
+print(message6)
+
+//----------------------------------------------//
+RESULT:
+
+
+Hello World
+Hello World
+let code change the world
+lisa said:it's a joke
+lisa said:'i like apple'
+lisa said :"i like apple"
+Pr Jaye Lin
+PR JAYE LIN
+pr jaye lin
+PR JAYE LIN
+Jaye Lin
+people
+human	man
+woman
+
+Process finished with exit code 0
