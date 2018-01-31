@@ -1,0 +1,57 @@
+#-*-coding:UTF-8 -*-
+favorite=' daimiaochun '
+print(favorite.rstrip()) #删除字符串末尾的空格
+print(favorite.lstrip()) #删除字符串首部的空格
+print(favorite.strip())  #删除字符串首尾的空格
+favorite=favorite.strip()  #实现永久更改字符串内容
+print(favorite)
+name='Jaye'
+print('hello, '+name+' would you like to learn some Python today')
+print(3+4)
+print(3**4) #幂
+print(0.9+0.8)
+print(0.9*0.7)
+print(5/3)
+message="hello, "+str(23)+" rd Birthday!"  #利用str()将23强制转化为字符串，使得Python能够辨识
+print(message)
+message1="my favorite number is "+str(2)+"!"
+print(message1)
+import this    #Python之禅
+
+//-----------------------------Result------------------------------------//
+
+ daimiaochun
+daimiaochun 
+daimiaochun
+daimiaochun
+hello, Jaye would you like to learn some Python today
+7
+81
+1.7000000000000002
+0.63
+1.6666666666666667
+hello, 23 rd Birthday!
+my favorite number is 2!
+The Zen of Python, by Tim Peters
+
+Beautiful is better than ugly.
+Explicit is better than implicit.
+Simple is better than complex.
+Complex is better than complicated.
+Flat is better than nested.
+Sparse is better than dense.
+Readability counts.
+Special cases aren't special enough to break the rules.
+Although practicality beats purity.
+Errors should never pass silently.
+Unless explicitly silenced.
+In the face of ambiguity, refuse the temptation to guess.
+There should be one-- and preferably only one --obvious way to do it.
+Although that way may not be obvious at first unless you're Dutch.
+Now is better than never.
+Although never is often better than *right* now.
+If the implementation is hard to explain, it's a bad idea.
+If the implementation is easy to explain, it may be a good idea.
+Namespaces are one honking great idea -- let's do more of those!
+
+Process finished with exit code 0
