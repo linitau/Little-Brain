@@ -1,5 +1,5 @@
 #-*-coding:UTF-8 -*-
-#列表
+#列表练习
 person=['women','men','child','adult']
 print(person)
 print(person[2])  #输出列表中对应位置的元素（列表从0开始索引）
