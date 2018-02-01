@@ -1,0 +1,48 @@
+#-*-coding:UTF-8 -*-
+#列表
+person=['women','men','child','adult']
+print(person)
+print(person[2])  #输出列表中对应位置的元素（列表从0开始索引）
+print(person[2].title())  #结合函数来变换
+print(person[-1])  #输出列表倒数第n个元素
+print("I am a "+person[-1].title())
+person[0]='female'  #修改列表中的元素
+print(person)
+person.append('baby')  #在列表末尾添加新元素
+print(person)
+
+motorcycles = []  #建立空列表，方便后续扩增
+motorcycles.append('honda')
+motorcycles.append('yamaha')
+motorcycles.append('suzuki')
+print(motorcycles)
+motorcycles.insert(1,'toyota')   #insert(n,'')用于插入新元素
+print(motorcycles)
+del motorcycles[1]  #删除列表中的第n个元素
+del motorcycles[0]
+print(motorcycles)
+print("my motorcycle is "+motorcycles.pop()+".")  #弹出最后一个元素，并使用
+print("my motorcycle is "+motorcycles.pop(0)+".") #弹出对应位置的元素,被弹出的元素就不再在列表中了
+print(motorcycles)  #上面已删除所有元素，返回空列表
+person=['women','men','child','adult']
+person.remove('women')  #删除列表中的“women”，被删除的元素就不再在列表中了
+print(person)
+
+//---------------------------Result---------------------------//
+
+['women', 'men', 'child', 'adult']
+child
+Child
+adult
+I am a Adult
+['female', 'men', 'child', 'adult']
+['female', 'men', 'child', 'adult', 'baby']
+['honda', 'yamaha', 'suzuki']
+['honda', 'toyota', 'yamaha', 'suzuki']
+['yamaha', 'suzuki']
+my motorcycle is suzuki.
+my motorcycle is yamaha.
+[]
+['men', 'child', 'adult']
+
+Process finished with exit code 0
