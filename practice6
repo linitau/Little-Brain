@@ -1,0 +1,27 @@
+#-*-coding:UTF-8 -*-
+people=['张三','李四','王五','赵六']
+print(people)
+message="I want to invite "+people[1]+" to my dinner"
+print(message)
+message=people.pop()
+print(message+' cannot come')
+print(people)
+people.append('小李')
+print(people)
+people.insert(0,'校长')
+print(people)
+del people[2]
+print(people)
+
+
+//-----------------------------Result---------------------------//
+
+['张三', '李四', '王五', '赵六']
+I want to invite 李四 to my dinner
+赵六 cannot come
+['张三', '李四', '王五']
+['张三', '李四', '王五', '小李']
+['校长', '张三', '李四', '王五', '小李']
+['校长', '张三', '王五', '小李']
+
+Process finished with exit code 0
