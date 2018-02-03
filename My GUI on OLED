@@ -1,0 +1,573 @@
+#include "headfile.h"
+
+ 
+static int8 main_menu_line_flag=0;        //主菜单界面行选择标志位
+static int8 parameter_menu_line_flag=0;   //参数界面行选择标志位
+
+
+int8 key_flag=0;      //发车flag
+int8 start_flag=0;
+int engine_flag=0;   //遥控控制发车停车flag
+
+
+//------------------------------遥控发车------------------------------//
+void remote_start()   //遥控发车
+{
+   if(gpio_get(E4)==1&&start_flag==0)
+   {
+     engine_flag=1;
+   }
+   if(engine_flag==1)
+   {
+     key_flag=1;     
+   }
+}
+//-------------------------------------------------------------------//
+
+
+
+//------------------------------遥控停车------------------------------//
+void remote_stop()
+{
+   if(gpio_get(E4)==1&&start_flag==1)
+     engine_flag=0;
+}
+//-------------------------------------------------------------------//
+
+
+
+//----------------------------主界面显示函数---------------------------//
+void main_menu()
+{
+    OLED_P6x8Str(10,0,"parameter");       
+     
+    OLED_P6x8Str(10,2,"sensors_normalize");
+
+    OLED_P6x8Str(10,4,"sensors_initial");
+     
+    OLED_P6x8Str(10,6,"motor");
+}
+//---------------------------------------------------------------------//
+
+
+
+//----------------------------按键扫描函数----------------------------//
+int key_scan()
+{
+    if( (!Button0) || (!Button1)|| (!Button2) )   //有任何一个按键按下
+    {
+       systick_delay_ms(5);
+       if(!Button0)      //KEY0按下
+       {
+         systick_delay_ms(5);
+         while(!Button0);
+         return 1;
+       }
+       
+       if(!Button1)     //KEY1按下
+       {
+         systick_delay_ms(5);
+         while(!Button1);
+         return 2;
+       }
+       
+       if(!Button2)    //KEY2按下
+       {
+         systick_delay_ms(5);
+         return 3;
+       }
+    }
+    
+    return 0;  //无任何键按下返回0
+}
+//------------------------------------------------------------------//
+
+
+
+
+//-----------------------------开机界面-----------------------------//
+void view_start_up(void)    
+{  
+   OLED_Fill(0x00);
+   OLED_P8x16Str(28,2,"Smart Car!");
+   OLED_P8x16Str(20,4,"Loading.....");
+   systick_delay_ms(1000);
+   OLED_Fill(0x00);
+   OLED_P6x8Str(8,1,"Read Flash or Not?");
+   OLED_P6x8Str(14,4,"K0.YES   K1.EXIT");
+   for( ; ;)
+   {
+      if( !Button0 )           //开机界面不使用按键扫面函数，直接判断按键是否按下 ,减少标志位的使用
+      {
+        OLED_Fill(0x00);
+        systick_delay_ms(5);
+        while(!Button0 );
+        OLED_P8x16Str(0,3,"Reading Flash..."); //读取flash里的参数
+        flash_read_data();
+        systick_delay_ms(800);        
+        OLED_Fill(0x00);
+        break; 
+      }
+      else if( !Button1 )   //加载默认参数,flash里参数出问题就用默认 
+      {    
+        OLED_Fill(0x00);
+        systick_delay_ms(5);
+        while(!Button1);
+        OLED_Fill(0x00);
+        break;
+      }
+   }
+}
+//------------------------------------------------------------------//
+
+
+//----------------------------菜单主界面----------------------------//
+void view_main_menu()
+{
+    uint8 key_num=0;
+  
+    key_num=key_scan();
+    systick_delay_ms(5);             //
+    switch(key_num)
+    {
+       case 1:    //循环顺序 3,2,1,0        //按键0用于选择主菜单界面行
+         
+            main_menu_line_flag++;
+            main_menu_line_flag%=4;
+            view_main_menu_refresh(main_menu_line_flag);//刷新界面
+            
+            break;
+          
+       case 2:   
+          
+            switch(main_menu_line_flag)       //进入当前行号对应的界面
+            {
+                case 0:
+                    OLED_Fill(0x00);
+                    view_parameter_setting();  //参数界面
+                    break;
+                  
+                case 1:
+                    OLED_Fill(0x00);
+                    view_sensor_normalize();   //电感归一化值
+                    break;
+                                
+                case 2:            
+                    OLED_Fill(0x00);
+                    view_sensor_initial();     //电感原始值界面
+                    break;
+                    
+                case 3:
+                    OLED_Fill(0x00);
+                    view_motor_setting();      //电机界面
+                    break;
+                   
+                default:       //无操作时，显示上次界面,不刷新，防止闪烁
+                    break;
+            }
+            view_main_menu_refresh(main_menu_line_flag);  //退出上述操作后，显示主界面
+            break;
+            
+       case 3:
+            break;
+            
+       default:
+            break;
+      }
+}
+//------------------------------------------------------------------//
+
+
+//---------------------------菜单主界面刷新--------------------------//
+void view_main_menu_refresh(int8 line_num)
+{
+  switch(line_num)  
+  {
+    case 0:
+        
+         OLED_Fill(0x00);
+         main_menu();
+         OLED_P6x8Str(2,0,"*");   //光标显示
+
+         break;
+        
+    case 1:
+        
+         OLED_Fill(0x00);
+         main_menu();
+         OLED_P6x8Str(2,2,"*");   //光标显示
+
+         break;        
+        
+     case 2:
+       
+         OLED_Fill(0x00);
+         main_menu();
+         OLED_P6x8Str(2,4,"*");   //光标显示
+       
+         break; 
+         
+     case 3:
+        
+         OLED_Fill(0x00);
+         main_menu();     
+         OLED_P6x8Str(2,6,"*");   //光标显示
+       
+         break;          
+        
+    default:
+         break;    
+  }
+
+}
+//--------------------------------------------------------------------//
+
+
+
+//-----------------------------参数界面刷新----------------------------//
+void view_parameter_menu_refresh(int8 line_num)
+{
+  switch(line_num)
+  {
+    case 0:
+        
+         OLED_Fill(0x00); 
+         view_parameter();
+         OLED_P6x8Str(2,0,"*");   //光标显示
+
+         break;
+        
+    case 1:
+        
+         OLED_Fill(0x00);
+         view_parameter();
+         OLED_P6x8Str(2,1,"*");   //光标显示
+
+         break;     
+         
+    case 2:
+        
+         OLED_Fill(0x00);
+         view_parameter();
+         OLED_P6x8Str(2,2,"*");   //光标显示
+
+         break; 
+
+    case 3:
+        
+         OLED_Fill(0x00);
+         view_parameter();
+         OLED_P6x8Str(2,3,"*");   //光标显示
+
+         break; 
+         
+    case 4:
+        
+         OLED_Fill(0x00);
+         view_parameter();
+         OLED_P6x8Str(2,4,"*");   //光标显示
+
+         break;              
+
+    case 5:
+        
+         OLED_Fill(0x00);
+         view_parameter();
+         OLED_P6x8Str(2,5,"*");   //光标显示
+
+         break;          
+        
+    default:
+         break;    
+  }   
+}
+//--------------------------------------------------------------------//
+
+//------------------------------参数设置------------------------------//
+void view_parameter_setting()
+{
+    uint8 key_num=0;
+    uint8 key_temp=0;
+    uint8 i=1;
+    uint8 temp=1;
+    view_parameter_menu_refresh(parameter_menu_line_flag);////////////////////////////////////////////////////////////////////////////
+    while(temp)
+    {
+      key_num=key_scan();
+      switch(key_num)
+      {
+        case 1:
+            parameter_menu_line_flag++;
+            parameter_menu_line_flag%=6;   //5 4 3 2 1 0
+            view_parameter_menu_refresh(parameter_menu_line_flag);
+            break;
+            
+        case 2:
+            while(i)
+            {
+               key_temp=key_scan();
+               switch(key_temp)
+               {
+                 case 1: 
+                     if(parameter_menu_line_flag%6==0)  
+                     {
+                        huan_KP+=2;
+                     }
+                     else if(parameter_menu_line_flag%6==1) 
+                     {
+                        DC_Out_limit+=500;
+                     }
+                     else if(parameter_menu_line_flag%6==2)
+                     {
+                        PID_K[0]+=5;
+                     }
+                     else if(parameter_menu_line_flag%6==3)
+                     {
+                        PID_K[1]+=5;
+                     }
+                     else if(parameter_menu_line_flag%6==4)
+                     {
+                        PID_K[2]+=5;
+                     }      
+                     else if(parameter_menu_line_flag%6==5)
+                     {
+                        Speed_Set+=2;
+                     }                        
+                     view_parameter_menu_refresh(parameter_menu_line_flag);  //刷新界面
+                     break;
+                     
+                 case 2:
+                     if(parameter_menu_line_flag%6==0)  
+                     {
+                        huan_KP-=2;
+                     }
+                     else if(parameter_menu_line_flag%6==1) 
+                     {
+                        DC_Out_limit-=500;
+                     }
+                     else if(parameter_menu_line_flag%6==2)
+                     {
+                        PID_K[0]-=5;
+                     }
+                     else if(parameter_menu_line_flag%6==3)
+                     {
+                        PID_K[1]-=5;
+                     }
+                     else if(parameter_menu_line_flag%6==4)
+                     {
+                        PID_K[2]-=5;
+                     }      
+                     else if(parameter_menu_line_flag%6==5)
+                     {
+                        Speed_Set-=2;
+                     }                        
+                     view_parameter_menu_refresh(parameter_menu_line_flag);  //刷新界面
+                     break;
+                     
+                 case 3:   //退出
+                     flash_write_data();
+                     i=0;
+                     break;
+                 
+                 default:
+                     break;
+               }
+            }
+          
+        case 3:
+          temp=0;
+            break;
+            
+        default:
+            break; 
+          
+      }
+    }
+}
+//--------------------------------------------------------------------//
+
+
+//----------------------------电感归一化值显示-------------------------//
+void view_sensor_normalize()
+{
+    uint8 key_num=0;
+    uint8 i=1;
+    while(i)
+    { 
+        OLED_P6x8Str(2,0,"H_L=");
+        OLED_PrintValueI(29,0,(int16)H_ADleft);          //左           
+             
+        OLED_P6x8Str(2,1,"H_R=");
+        OLED_PrintValueI(29,1,(int16)H_ADright);         //右
+
+        OLED_P6x8Str(2,2,"M=");
+        OLED_PrintValueI(26,2,(int16)middle);            //中
+             
+        OLED_P6x8Str(2,3,"V_L=");
+        OLED_PrintValueI(29,3,(int16)V_ADleft);          //左竖
+             
+        OLED_P6x8Str(2,4,"V_R=");
+        OLED_PrintValueI(29,4,(int16)V_ADright);         //右竖  
+        
+        key_num=key_scan();
+        switch(key_num)
+        {
+          case 1:
+              break;
+          case 2:
+              break;
+          case 3:
+              i=0;
+              break;
+        }
+      
+    }
+}
+//---------------------------------------------------------------------//
+
+
+//-----------------------------电感原始值显示--------------------------//
+void view_sensor_initial()
+{
+    uint8 key_num=0;
+    uint8 i=1;
+    while(i)
+    {   
+        OLED_P6x8Str(2,0,"L_H=");
+        OLED_PrintValueI(29,0,(int16)AD_valu1[0]);       //左横原  
+         
+        OLED_P6x8Str(2,2,"M_H=");
+        OLED_PrintValueI(29,2,(int16)AD_valu1[1]);       //中横原     
+     
+        OLED_P6x8Str(2,1,"R_H=");
+        OLED_PrintValueI(29,1,(int16)AD_valu1[2]);       //右横原 
+         
+        OLED_P6x8Str(2,5,"L_V=");
+        OLED_PrintValueI(29,5,(int16)AD_valu1[3]);       //左竖原
+         
+        OLED_P6x8Str(2,6,"R_V=");
+        OLED_PrintValueI(29,6,(int16)AD_valu1[4]);       //右竖原  
+    
+        key_num=key_scan();
+        switch(key_num)
+        {
+          case 1:
+              break;
+          case 2:
+              break;
+          case 3:
+              i=0;
+              break;
+        }
+    }
+}
+//--------------------------------------------------------------------//
+
+//-----------------------------参数显示-------------------------------//
+void view_parameter()
+{
+    OLED_P6x8Str(8,0,"huan_KP=");                         
+    OLED_PrintValueI(56,0,(int16)(huan_KP));               //环岛P值
+    
+    OLED_P6x8Str(8,1,"DC_Out_limit=");                         
+    OLED_PrintValueI(80,1,(int16)(DC_Out_limit));          //转向输出限幅  
+    
+    OLED_P6x8Str(8,2,"speed.KP=");                         
+    OLED_PrintValueI(64,2,(int16)(PID_K[0]));              //速度KP  
+    
+    OLED_P6x8Str(8,3,"speed.KI=");                         
+    OLED_PrintValueI(64,3,(int16)(PID_K[1]));              //速度KI  
+    
+    OLED_P6x8Str(8,4,"speed.KI=");                         
+    OLED_PrintValueI(64,4,(int16)(PID_K[2]));              //速度KD   
+    
+    OLED_P6x8Str(8,5,"speed_set=");                         
+    OLED_PrintValueI(64,5,(int16)(Speed_Set));             //设定速度    
+}
+//--------------------------------------------------------------------//
+
+
+//-----------------------------电机界面显示---------------------------//
+void view_motor_setting()
+{ 
+   uint8 i=1;
+   uint8 key_num=0;
+   while(i)
+   {
+      OLED_P6x8Str(2,0,"dididi");  
+      key_num=key_scan();
+      switch(key_num)
+      {
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            i=0;
+            break;
+      }
+   }
+}
+//-------------------------------------------------------------------//
+
+
+
+
+int16 DC_Out_limit;
+int16 huan_KP;
+
+//--------------阈值参数初始化,如果flash数据有问题就用这个-------------//
+void parameter_init()
+{
+   DC_Out_limit=9000;
+   
+   PID_K[0]=170;
+   PID_K[1]=0;
+   PID_K[2]=20;
+   
+   Speed_Set=66;
+   
+   huan_KP=75;
+}
+//-------------------------------------------------------------------//
+
+uint32 read_buffer[10]={0};             //定义Flash读缓冲
+uint32 write_buffer[10]={0};            //定义Flash写缓冲
+
+//----------------------------写参数保存至FLASH-----------------------//
+void flash_write_data()
+{
+    DisableInterrupts; //关总中断,flash读写不能被中断打断
+
+    FLASH_EraseSector(251);  //擦除251扇区 
+    systick_delay_ms(30);
+
+    write_buffer[0] = (int16)(DC_Out_limit);
+    write_buffer[1] = (int16)(PID_K[0]);
+    write_buffer[2] = (int16)(PID_K[1]);
+    write_buffer[3] = (int16)(PID_K[2]);
+    write_buffer[4] = (int16)(Speed_Set);
+    write_buffer[5] = (int16)(huan_KP);
+    
+    FLASH_WriteSector(251,(const uint8 *)write_buffer,4,0); //写入数据到指定扇区
+    systick_delay_ms(10);
+ 
+    EnableInterrupts;
+}
+//-------------------------------------------------------------------//
+
+
+//----------------------读取FLASH(开机时用到)-------------------------//
+void flash_read_data()
+{
+  uint8 i = 0;
+ 
+  DisableInterrupts;
+
+  for(i = 0; i < 10; i++)
+    read_buffer[i] = flash_read(251,i*2,uint16);
+  
+ 
+  EnableInterrupts;
+}
+//-------------------------------------------------------------------//
