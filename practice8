@@ -1,0 +1,29 @@
+#-*-coding:UTF-8 -*-
+names=['jack','trick','kavin','admin']
+del names[:]
+if names:
+    for name in names:
+        if name =='admin':
+            print("hello,"+name+" good morning,nice to meet you ")
+        else:
+            print("hello," + name+"good morning")
+else:
+    print("We need to find some users")
+current_users=['error','ck','check','daian','demon']
+new_user=['Error','ck','janel','jaye','right']
+for user in new_user:
+    if user.lower() in current_users:
+        print(user+" is used ,please add other names")
+    else:
+        print("this name is avaliable")
+        
+//--------------------------------------Result----------------------------------//
+
+We need to find some users
+Error is used ,please add other names
+ck is used ,please add other names
+this name is avaliable
+this name is avaliable
+this name is avaliable
+
+Process finished with exit code 0
