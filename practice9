@@ -1,0 +1,116 @@
+#-*-coding:UTF-8 -*-
+friend={'name':'huangzhiwei','age':'22','city':'putian'}
+print(friend)
+users={'name':'huangzhiwei',
+       'first':'huang',
+       'last':'zhiwei',
+       'test':'zhiwei'
+       }
+for key in users.items():  #遍历键-值对
+    print(key)
+for key,cal in users.items():
+    print(key)
+    print(cal)
+for key in users.keys():  #遍历键
+    print(key)
+for kal in users.values():  #遍历值
+    print(kal)
+if 'kal' not in users.keys():
+    print("error")
+for calc in set(users.values()):  #剔除重复元素
+    print('9999'+calc)
+alien_0={'color':'blue','size':'big','point':'5'}
+alien_1={'color':'red','size':'samll','point':'9'}
+aliens=[alien_0,alien_1]   #字典列表
+print(aliens)
+for alien in aliens:
+    print(alien)
+pizza = {
+'crust': 'thick',
+'toppings': ['mushrooms', 'extra cheese'], #字典嵌套列表
+}
+print(pizza['crust'])
+print(pizza['toppings'])
+users = {            #字典嵌套字典
+'aeinstein': {
+'first': 'albert',
+'last': 'einstein',
+'location': 'princeton',
+},
+'mcurie': {
+'first': 'marie',
+'last': 'curie',
+'location': 'paris',
+},
+}
+for username, user_info in users.items():
+    print("\nUsername: " + username)
+    full_name = user_info['first'] + " " + user_info['last']
+    location = user_info['location']
+    print("\tFull name: " + full_name.title())
+    print("\tLocation: " + location.title())
+
+dog={'name':'haby','people':'amri'}
+cat={'name':'abby','people':'right'}
+pets=[dog,cat]
+for pet in pets:
+    print(pet)
+favorite_places={
+        'kitty':{'mountain_tai','Yangtzi_river'},
+        'happy':{'forbidden_ciy','zhujiang'},
+        'kyle':{'meizhou_island','gugong'}
+                 }
+for name,place in favorite_places.items():
+    print(name+':')
+    print(place)
+    
+//---------------------------------Result-------------------------------//
+
+{'name': 'huangzhiwei', 'age': '22', 'city': 'putian'}
+('name', 'huangzhiwei')
+('first', 'huang')
+('last', 'zhiwei')
+('test', 'zhiwei')
+name
+huangzhiwei
+first
+huang
+last
+zhiwei
+test
+zhiwei
+name
+first
+last
+test
+huangzhiwei
+huang
+zhiwei
+zhiwei
+error
+9999huang
+9999zhiwei
+9999huangzhiwei
+[{'color': 'blue', 'size': 'big', 'point': '5'}, {'color': 'red', 'size': 'samll', 'point': '9'}]
+{'color': 'blue', 'size': 'big', 'point': '5'}
+{'color': 'red', 'size': 'samll', 'point': '9'}
+thick
+['mushrooms', 'extra cheese']
+
+Username: aeinstein
+	Full name: Albert Einstein
+	Location: Princeton
+
+Username: mcurie
+	Full name: Marie Curie
+	Location: Paris
+{'name': 'haby', 'people': 'amri'}
+{'name': 'abby', 'people': 'right'}
+kitty:
+{'mountain_tai', 'Yangtzi_river'}
+happy:
+{'zhujiang', 'forbidden_ciy'}
+kyle:
+{'meizhou_island', 'gugong'}
+
+Process finished with exit code 0
