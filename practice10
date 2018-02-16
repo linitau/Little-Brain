@@ -1,0 +1,20 @@
+#-*-coding:UTF-8 -*-
+sandwich_orders=['af','fa','gae']
+finished_sandwiches=[]
+for  sandwich_order in sandwich_orders:
+    finished_sandwiches.append(sandwich_order)
+    print(' I made your '+sandwich_order +'sandwich')
+print(finished_sandwiches)
+def greeting(user_name,username_1):
+    print(user_name+username_1+' , Happy New Year!!!')
+greeting('Pr.JayeLin,',' ji')
+
+//-----------------------------------Result--------------------------------//
+
+ I made your afsandwich
+ I made your fasandwich
+ I made your gaesandwich
+['af', 'fa', 'gae']
+Pr.JayeLin, ji , Happy New Year!!!
+
+Process finished with exit code 0
