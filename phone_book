@@ -1,5 +1,5 @@
 x={'火警':110,'消防':119}
-def phone_book():
+def phone_book(): 
     while True:
         print('1:查询','2:删除','3:修改','4:增加','5:结束')
         n=int(input('请输入想要对应操作的序号：'))
