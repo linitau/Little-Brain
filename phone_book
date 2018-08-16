@@ -1,0 +1,35 @@
+x={'火警':110,'消防':119}
+def phone_book():
+    while True:
+        print('1:查询','2:删除','3:修改','4:增加','5:结束')
+        n=int(input('请输入想要对应操作的序号：'))
+        if n==1:
+            name=input('请输入联系人姓名：')
+            if x.get(name,1)==1:
+                print('未找到此联系人')
+            else:
+                print(x[name])
+        elif n==2:
+            name=input('请输入要删除的联系人姓名：')
+            if x.get(name,1)==1:
+                print('未找到此联系人')
+            else:
+                x.pop(name)
+                print(x)
+        elif n==3:
+            name=input('请输入要修改的联系人姓名：')
+            if x.get(name,1)==1:
+                print('未找到此联系人')
+            else:
+                add=input('请输入新号码：')
+                x[name]=add
+                print(x)
+        elif n==4:
+            d=input('请输入姓名：')
+            f=input('请输入电话：')
+            x[d]=f
+            print(x)
+        elif n==5:
+            break
+        else:
+            print('输入有误')
